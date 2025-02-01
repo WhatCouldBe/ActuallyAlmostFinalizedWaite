@@ -134,7 +134,7 @@ router.post('/delete', async (req, res) => {
   try {
     const { leaderboardId, userId, password } = req.body;
     if (!leaderboardId || !userId || !password) {
-      return res.status(400).json({ success: false, error: 'Leaderboard ID, userId, and password are required.' });
+      return res.status(400).json({ success: false, error: 'Correct Password Required!' });
     }
     const leaderboard = await Leaderboard.findById(leaderboardId);
     if (!leaderboard) {
