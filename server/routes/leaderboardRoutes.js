@@ -129,12 +129,11 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// Route: Delete a leaderboard (only for the creator, with password verification).
 router.post('/delete', async (req, res) => {
   try {
     const { leaderboardId, userId, password } = req.body;
     if (!leaderboardId || !userId || !password) {
-      return res.status(400).json({ success: false, error: 'Correct Password Required!' });
+      return res.status(400).json({ success: false, error: 'Correct Password Required' });
     }
     const leaderboard = await Leaderboard.findById(leaderboardId);
     if (!leaderboard) {
