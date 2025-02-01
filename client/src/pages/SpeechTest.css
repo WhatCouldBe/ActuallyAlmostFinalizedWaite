@@ -1,5 +1,5 @@
 .speech-test-container {
-    background-color: #dce1eb;
+    background-color: transparent; /* Now transparent so background objects show through */
     min-height: 100vh;
     padding-top: 60px;
     display: flex;
@@ -34,6 +34,13 @@
     font-weight: 600;
     margin-bottom: 1.5rem;
     color: #3f51b5;
+  }
+  
+  .countdown {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #d32f2f;
+    font-weight: bold;
   }
   
   .start-btn {

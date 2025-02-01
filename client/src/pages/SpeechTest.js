@@ -17,7 +17,9 @@ const sentences = [
   "She sells seashells by the seashore."
 ];
 
-// Simple Levenshtein distance function
+/**
+ * Simple Levenshtein distance function to compute string differences.
+ */
 function levenshtein(a, b) {
   const matrix = [];
   const aLen = a.length;
@@ -25,7 +27,7 @@ function levenshtein(a, b) {
   if (aLen === 0) return bLen;
   if (bLen === 0) return aLen;
 
-  // initialize matrix
+  // Initialize the matrix.
   for (let i = 0; i <= bLen; i++) {
     matrix[i] = [i];
   }
@@ -48,6 +50,9 @@ function levenshtein(a, b) {
   return matrix[bLen][aLen];
 }
 
+/**
+ * Returns a percentage similarity between two strings.
+ */
 function similarityPercentage(str1, str2) {
   const distance = levenshtein(str1, str2);
   const maxLen = Math.max(str1.length, str2.length);
@@ -61,21 +66,26 @@ export default function SpeechTest() {
   const [similarity, setSimilarity] = useState(null);
   const [message, setMessage] = useState('');
   const [testActive, setTestActive] = useState(false);
+  const [countdown, setCountdown] = useState(null);
   const recognitionRef = useRef(null);
   const timerRef = useRef(null);
+  const countdownRef = useRef(null);
 
-  // Pick a new prompt when component mounts or test ends.
+  // Threshold below which we consider speech as “slurred” (i.e. not clear).
+  const SIMILARITY_THRESHOLD = 75;
+
+  // Pick a new test sentence at random.
   const pickNewSentence = () => {
     const randomSentence = sentences[Math.floor(Math.random() * sentences.length)];
     setTestSentence(randomSentence);
   };
 
-  // When the component mounts, pick an initial sentence.
+  // On mount, pick an initial sentence.
   useEffect(() => {
     pickNewSentence();
   }, []);
 
-  // Start speech recognition.
+  // Start the speech recognition process.
   const startRecognition = () => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
@@ -91,19 +101,19 @@ export default function SpeechTest() {
       setResultText(transcript);
       const sim = similarityPercentage(testSentence, transcript);
       setSimilarity(sim.toFixed(2));
-      if (sim < 75) {
-        setMessage("You might be drunk. Try again.");
+      if (sim < SIMILARITY_THRESHOLD) {
+        setMessage("Your speech was too slurred. This likely indicates intoxication.");
       } else {
-        setMessage("Well done! You said it clearly.");
+        setMessage("Excellent! Your speech was clear.");
       }
     };
     recognition.onerror = (event) => {
-      setMessage("Error during recognition: " + event.error);
+      setMessage("Speech recognition error: " + event.error);
     };
     recognition.onend = () => {
       setTestActive(false);
       clearTimeout(timerRef.current);
-      // When recognition ends, pick a new sentence for next test.
+      // Prepare a new sentence for the next test.
       pickNewSentence();
     };
 
@@ -111,7 +121,7 @@ export default function SpeechTest() {
     recognitionRef.current = recognition;
     setTestActive(true);
 
-    // Automatically stop after 10 seconds if not manually stopped.
+    // Automatically stop recognition after 10 seconds if not manually stopped.
     timerRef.current = setTimeout(() => {
       if (recognitionRef.current) {
         recognitionRef.current.stop();
@@ -119,21 +129,37 @@ export default function SpeechTest() {
     }, 10000);
   };
 
-  // Toggle test on button click.
-  const handleTestToggle = () => {
-    if (testActive) {
-      // If active, stop the recognition.
-      if (recognitionRef.current) {
-        recognitionRef.current.stop();
+  // Start a countdown, then begin recognition.
+  const startTest = () => {
+    setResultText('');
+    setSimilarity(null);
+    setMessage('');
+    let count = 3;
+    setCountdown(count);
+    countdownRef.current = setInterval(() => {
+      count--;
+      if (count > 0) {
+        setCountdown(count);
+      } else {
+        clearInterval(countdownRef.current);
+        setCountdown(null);
+        startRecognition();
       }
-      setTestActive(false);
+    }, 1000);
+  };
+
+  // Toggle the test on/off.
+  const handleTestToggle = () => {
+    if (testActive || countdown !== null) {
+      // If a test is active or in countdown, stop everything.
+      if (recognitionRef.current) recognitionRef.current.stop();
       clearTimeout(timerRef.current);
+      clearInterval(countdownRef.current);
+      setCountdown(null);
+      setTestActive(false);
+      setMessage("Test stopped. Press 'Start Test' to try again.");
     } else {
-      // Start a new test.
-      setResultText('');
-      setSimilarity(null);
-      setMessage('');
-      startRecognition();
+      startTest();
     }
   };
 
@@ -145,10 +171,17 @@ export default function SpeechTest() {
       }} />
       <div className="speech-test-content">
         <h1>Speech Test</h1>
-        <p className="instruction">You have 10 seconds to say the sentence below:</p>
+        <p className="instruction">
+          When ready, press "Start Test" and clearly recite the sentence below within 10 seconds.
+        </p>
         <div className="test-sentence">{testSentence}</div>
+        {countdown !== null && (
+          <div className="countdown">
+            Starting in {countdown}...
+          </div>
+        )}
         <button className="start-btn" onClick={handleTestToggle}>
-          {testActive ? "Stop Test" : "Start Test"}
+          {testActive || countdown !== null ? "Stop Test" : "Start Test"}
         </button>
         {resultText && (
           <div className="result">
