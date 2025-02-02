@@ -44,8 +44,8 @@ export default function Navbar({ onSignOut }) {
           <li onClick={() => handleLinkClick('/leaderboard')}>Leaderboard</li>
           <li onClick={() => handleLinkClick('/speech-test')}>Speech Test</li>
           <li onClick={() => handleLinkClick('/fun-activities')}>Fun Activities</li>
-          <li onClick={() => handleLinkClick('/settings')}>Settings</li>
           <li onClick={() => handleLinkClick('/im-drinking')}>I'm Drinking</li>
+          <li onClick={() => handleLinkClick('/settings')}>Settings</li>
         </ul>
       </div>
       {isOpen && <div className="sidebar-overlay" onClick={toggleSidebar}></div>}
