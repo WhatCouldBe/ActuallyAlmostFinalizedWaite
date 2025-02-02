@@ -12,7 +12,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "postinstall": "chmod +x ./node_modules/.bin/react-scripts"
+    "postinstall": "shx chmod +x ./node_modules/.bin/react-scripts"
   },
   "browserslist": {
     "production": [
@@ -27,6 +27,7 @@
     ]
   },
   "devDependencies": {
-    "eslint-plugin-react-hooks": "^5.1.0"
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "shx": "^0.3.4"
   }
 }
