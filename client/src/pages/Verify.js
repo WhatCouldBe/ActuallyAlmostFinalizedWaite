@@ -1,6 +1,79 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { verifyEmail, resend } from '../api';
+
+function CodeInput({ value, onChange }) {
+  const inputsRef = useRef([]);
+  const length = 6;
+  
+  const handleChange = (e, index) => {
+    const char = e.target.value.toUpperCase();
+    let newVal = value.split('');
+    newVal[index] = char;
+    while (newVal.length < length) {
+      newVal.push('');
+    }
+    const newCode = newVal.slice(0, length).join('');
+    onChange(newCode);
+    if (char && index < length - 1) {
+      inputsRef.current[index + 1].focus();
+    }
+  };
+
+  const handleKeyDown = (e, index) => {
+    if (e.key === 'Backspace') {
+      e.preventDefault();
+      let newVal = value.split('');
+      if (newVal[index]) {
+        newVal[index] = '';
+        onChange(newVal.join(''));
+      } else if (index > 0) {
+        inputsRef.current[index - 1].focus();
+        let prevVal = value.split('');
+        prevVal[index - 1] = '';
+        onChange(prevVal.join(''));
+      }
+    }
+  };
+
+  const handlePaste = (e) => {
+    e.preventDefault();
+    const pasteData = e.clipboardData.getData('text').toUpperCase().replace(/\s/g, '');
+    let pasteChars = pasteData.split('').slice(0, length);
+    while (pasteChars.length < length) {
+      pasteChars.push('');
+    }
+    const newCode = pasteChars.join('');
+    onChange(newCode);
+    const lastIndex = Math.min(pasteChars.length, length) - 1;
+    if (inputsRef.current[lastIndex]) {
+      inputsRef.current[lastIndex].focus();
+    }
+  };
+
+  const codeArray = [];
+  for (let i = 0; i < length; i++) {
+    codeArray.push(value[i] || '');
+  }
+
+  return (
+    <div className="code-input-container">
+      {codeArray.map((char, index) => (
+        <input
+          key={index}
+          type="text"
+          maxLength="1"
+          value={char}
+          onChange={(e) => handleChange(e, index)}
+          onKeyDown={(e) => handleKeyDown(e, index)}
+          onPaste={handlePaste}
+          ref={(el) => (inputsRef.current[index] = el)}
+          className="code-input-bubble"
+        />
+      ))}
+    </div>
+  );
+}
 
 export default function Verify({ userSignupData }) {
   const navigate = useNavigate();
@@ -67,14 +140,7 @@ export default function Verify({ userSignupData }) {
 
       <form onSubmit={handleVerify} style={{ marginTop: '1rem' }}>
         <div>
-          <label>Verification Code</label>
-          <input
-            type="text"
-            placeholder="6-digit code from email"
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-            required
-          />
+          <CodeInput value={code} onChange={setCode} />
         </div>
 
         <button type="submit" style={{ marginTop: '1rem' }}>
@@ -90,7 +156,6 @@ export default function Verify({ userSignupData }) {
         Resend Code
       </button>
 
-      {/* Center the sign-up/sign-in links */}
       <div
         className="form-links"
         style={{
@@ -100,7 +165,6 @@ export default function Verify({ userSignupData }) {
           marginTop: '1rem',
         }}
       >
-
         <Link to="/signin">Sign In</Link>
       </div>
     </div>

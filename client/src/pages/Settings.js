@@ -7,7 +7,6 @@ export default function Settings() {
   const storedUserStr = localStorage.getItem('bacshotsUser');
   const user = storedUserStr ? JSON.parse(storedUserStr) : null;
 
-  // Compute initials (as in Home.js)
   const initials = user && user.name 
     ? user.name.split(' ').reduce((acc, cur, idx, arr) => {
         if (idx === 0 || idx === arr.length - 1) return acc + cur[0];
@@ -15,7 +14,6 @@ export default function Settings() {
       }, '').toUpperCase()
     : 'N';
 
-  // Use existing profilePicture if available.
   const [profilePicture, setProfilePicture] = useState(user?.profilePicture || '');
   const [preview, setPreview] = useState(user?.profilePicture || '');
   const [weight, setWeight] = useState(user?.weight || '');
@@ -26,12 +24,10 @@ export default function Settings() {
   const [feet, setFeet] = useState(initialFeet);
   const [inches, setInches] = useState(initialInches);
   
-  // Use Date of Birth instead of age.
-  // If user.dateOfBirth exists, convert it to YYYY-MM-DD format.
+  // If user.dateOfBirth exists convert it to YYYY-MM-DD format.
   const initialDOB = user?.dateOfBirth ? new Date(user.dateOfBirth).toISOString().slice(0,10) : '';
   const [dateOfBirth, setDateOfBirth] = useState(initialDOB);
   
-  // Sex field.
   const [sex, setSex] = useState(user?.sex || '');
   const [message, setMessage] = useState('');
 

@@ -1,9 +1,14 @@
+/* client/src/pages/Leaderboard.css */
 .leaderboard-container {
   background-color: transparent; /* changed from #dce1eb to transparent */
   min-height: 100vh;
   padding-top: 60px;
   width: 100vw;
   overflow-x: hidden;
+  /* Disable text selection globally */
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
 }
 
 .leaderboard-content {
@@ -54,7 +59,6 @@
   font-weight: bold;
 }
 
-/* Ranking selector positioned at top right inside modal */
 .ranking-selector {
   display: inline-flex;
   align-items: center;
@@ -223,7 +227,14 @@
   transform: scale(1.05);
 }
 
-/* Code Input Bubbles */
+/* Code Input Bubbles - allow text selection */
+.code-input-container,
+.code-input-bubble {
+  user-select: text !important;
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+}
+
 .code-input-container {
   display: inline-flex;
   gap: 0.5rem;
@@ -238,11 +249,6 @@
   border: 2px solid #ccc;
   border-radius: 8px;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.code-input-bubble:focus {
-  border-color: #3f51b5;
-  box-shadow: 0 0 5px rgba(63,81,181,0.5);
 }
 
 /* Modal styles */

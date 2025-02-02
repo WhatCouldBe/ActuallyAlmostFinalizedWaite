@@ -9,6 +9,9 @@
   left: 0;
   right: 0;
   z-index: 1000;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
 }
 
 .navbar-hamburger {
@@ -25,6 +28,9 @@
   font-size: 1.2rem;
   font-weight: 600;
   margin-left: 1rem;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
 }
 
 .navbar-signout-container {
@@ -44,6 +50,9 @@
   display: inline-flex;
   flex: none;
   margin-right: 0; /* Removed extra margin */
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
 }
 
 .navbar-signout:hover {
@@ -63,6 +72,9 @@
   transition: left 0.3s ease;
   z-index: 1100;
   padding-top: 60px;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
 }
 
 .sidebar.open {

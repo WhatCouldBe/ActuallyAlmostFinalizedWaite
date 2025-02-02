@@ -1,4 +1,3 @@
-// client/src/components/Navbar.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Navbar.css';
@@ -11,8 +10,10 @@ export default function Navbar({ onSignOut }) {
   const toggleSidebar = () => setIsOpen(!isOpen);
 
   const handleLinkClick = (path) => {
-    navigate(path);
     setIsOpen(false);
+    setTimeout(() => {
+      navigate(path);
+    }, 300);
   };
 
   return (

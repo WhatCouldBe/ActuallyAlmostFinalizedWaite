@@ -1,4 +1,3 @@
-// client/src/App.js
 import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
@@ -12,16 +11,11 @@ import Leaderboard from './pages/Leaderboard';
 import Settings from './pages/Settings';
 import SpeechTest from './pages/SpeechTest';
 import ProtectedRoute from './ProtectedRoute';
-
 import ForgotPassword from './pages/ForgotPassword';
 import ChangePassword from './pages/ChangePassword';
-
-// Drinking Section pages
 import ImDrinking from './pages/ImDrinking';
 import DrinkDiagram from './pages/DrinkDiagram';
 import Mixes from './pages/Mixes';
-
-// Import the BackgroundBlobs component
 import BackgroundBlobs from './components/BackgroundBlobs';
 
 export default function App() {
@@ -31,10 +25,8 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      {/* Render the background blobs at the root level */}
       <BackgroundBlobs />
       <div className="app">
-        {/* Ensure this container does not clip overflow */}
         <div className="container" style={{ overflow: 'visible' }}>
           {globalError && <div className="error">{globalError}</div>}
           <Routes>

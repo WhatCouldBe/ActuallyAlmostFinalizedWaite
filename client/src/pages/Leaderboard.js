@@ -5,7 +5,6 @@ import Navbar from '../components/Navbar';
 import { createLeaderboard, joinLeaderboard, getUserLeaderboards, deleteLeaderboard } from '../api';
 import AchievementRing from '../components/AchievementRing';
 
-// Bubble-style code input component.
 function CodeInput({ value, onChange }) {
   const inputsRef = useRef([]);
   const length = 5;
@@ -30,6 +29,20 @@ function CodeInput({ value, onChange }) {
     }
   };
 
+  const handlePaste = (e) => {
+    e.preventDefault();
+    const pasteData = e.clipboardData.getData('text').toUpperCase();
+    let newVal = pasteData.split('').slice(0, length);
+    while (newVal.length < length) {
+      newVal.push('');
+    }
+    const newCode = newVal.join('');
+    onChange(newCode);
+    if (inputsRef.current[length - 1]) {
+      inputsRef.current[length - 1].focus();
+    }
+  };
+
   const codeArray = [];
   for (let i = 0; i < length; i++) {
     codeArray.push(value[i] || '');
@@ -45,6 +58,7 @@ function CodeInput({ value, onChange }) {
           value={char}
           onChange={(e) => handleChange(e, index)}
           onKeyDown={(e) => handleKeyDown(e, index)}
+          onPaste={handlePaste}
           ref={(el) => (inputsRef.current[index] = el)}
           className="code-input-bubble"
         />
@@ -272,7 +286,7 @@ export default function Leaderboard() {
                 placeholder="My Leaderboard"
                 required
               />
-              <button type="submit">Create Leaderboard</button>
+              <button type="submit" style={{ marginTop: '1rem' }}>Create Leaderboard</button>
             </form>
           </div>
         )}
