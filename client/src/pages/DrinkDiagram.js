@@ -82,13 +82,15 @@ export default function DrinkDiagram() {
     setUseDragContainer(selectedDrinks.length > 1);
   }, [selectedDrinks]);
 
+  // Update allowed details when user's weight/sex or drinkData/selectedDrinks change.
   useEffect(() => {
+    // To avoid infinite loops, we use only user.weight, user.sex and JSON stringified versions of the arrays.
     if (!user || !user.weight || !user.sex) {
       setUserInfoModalOpen(true);
     } else {
       calculateAllowed();
     }
-  }, [user, selectedDrinks, drinkData]);
+  }, [user?.weight, user?.sex, JSON.stringify(selectedDrinks), JSON.stringify(drinkData)]);
 
   const calculateAllowed = () => {
     // Dummy formula:
@@ -191,7 +193,7 @@ export default function DrinkDiagram() {
     setTimeout(() => {
       setExplanationOpen(false);
       setExplanationClosing(false);
-    }, 300); // duration of the closing animation
+    }, 300);
   };
 
   return (
