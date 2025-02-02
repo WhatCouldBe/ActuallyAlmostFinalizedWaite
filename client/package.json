@@ -13,7 +13,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "postinstall": "shx chmod +x ./node_modules/.bin/react-scripts"
+    "postinstall": "npx shx chmod +x ./node_modules/.bin/react-scripts"
   },
   "browserslist": {
     "production": [
