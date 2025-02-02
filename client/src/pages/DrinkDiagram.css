@@ -1,7 +1,8 @@
-/* client/src/pages/DrinkDiagram.css */
 .drink-diagram-container {
     background-color: transparent;
     min-height: 100vh;
+    min-width: 1000px;
+
     padding-top: 60px;
     display: flex;
     flex-direction: column;
@@ -11,11 +12,7 @@
   
   .drink-diagram-content {
     background-color: #fff;
-    width: 80%;
-    min-width: 800px;
-    max-height: 800px;
-
-    max-width: 1000px;
+    width: 90%;
     margin: 2rem auto;
     padding: 2rem;
     border-radius: 8px;
@@ -25,13 +22,13 @@
     overflow: hidden;
   }
   
-  /* Cards container: horizontally arranged and draggable if needed; if static, center cards */
+  /* Cards container: if more than one card, allow dragging; otherwise center cards */
   .cards-container {
     display: flex;
-        gap: 1rem;
+    gap: 1rem;
     overflow-x: auto;
     cursor: grab;
-    padding: 5rem 0;
+    padding: 2rem 0;
   }
   .cards-container.static {
     justify-content: center;
@@ -52,8 +49,8 @@
   /* Drink card styling */
   .drink-entry {
     background-color: #f9f9f9;
-    border-radius: 15px;
-    padding: 2rem;
+    border-radius: 8px;
+    padding: 1rem;
     flex: 0 0 auto;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     cursor: pointer;

@@ -7,10 +7,7 @@ import {
 } from '../api';
 import Navbar from '../components/Navbar';
 
-/**
- * Helper function to format a Date object as a local YYYY-MM-DD string.
- * We force the time to noon (12:00) to normalize differences.
- */
+
 function formatLocalDate(date) {
   const d = new Date(date.getTime());
   d.setHours(12, 0, 0, 0);
@@ -106,6 +103,7 @@ export default function Home() {
   const [monthlyModalOpen, setMonthlyModalOpen] = useState(false);
   const [achievementsModalOpen, setAchievementsModalOpen] = useState(false);
 
+  // Fetch logs and achievements only once on mount
   useEffect(() => {
     if (!user?._id) return;
     (async () => {
@@ -128,7 +126,7 @@ export default function Home() {
         console.error("Error fetching achievements:", err);
       }
     })();
-  }, [user]);
+  }, []); // empty dependency array
 
   // Filter logs for the current month.
   const monthLogs = useMemo(() => {
@@ -194,14 +192,6 @@ export default function Home() {
 
   const handleDayClick = (dateObj) => {
     if (!dateObj) return;
-    // Prevent clicking on dates in the future if viewing the current month.
-    const clickedDate = new Date(dateObj);
-    clickedDate.setHours(12, 0, 0, 0);
-    const today = new Date();
-    today.setHours(12, 0, 0, 0);
-    if (currentYear === today.getFullYear() && currentMonth === (today.getMonth() + 1)) {
-      if (clickedDate > today) return;
-    }
     if (selectedDate && selectedDate.getTime() === dateObj.getTime()) {
       setIsDayPanelOpen(false);
       setTimeout(() => setSelectedDate(null), 300);
