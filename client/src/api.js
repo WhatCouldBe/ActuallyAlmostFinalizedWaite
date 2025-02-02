@@ -20,7 +20,7 @@ export async function signup(data) {
     const res = await fetchWithTimeout('/auth/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
+      body: JSON.stringify(data)
     });
     if (!res) return { success: false };
     return res.json();
@@ -35,7 +35,7 @@ export async function signin(email, password) {
     const res = await fetchWithTimeout('/auth/signin', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password })
     });
     if (!res) return { success: false };
     return res.json();
@@ -50,7 +50,7 @@ export async function verifyEmail(email, code) {
     const res = await fetchWithTimeout('/auth/verify', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, code }),
+      body: JSON.stringify({ email, code })
     });
     if (!res) return { success: false };
     return res.json();
@@ -65,7 +65,7 @@ export async function resend(email) {
     const res = await fetchWithTimeout('/auth/resend', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }),
+      body: JSON.stringify({ email })
     });
     if (!res) return { success: false };
     return res.json();
@@ -80,7 +80,7 @@ export async function requestPasswordOTP(email) {
     const res = await fetchWithTimeout('/auth/request-password-otp', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }),
+      body: JSON.stringify({ email })
     });
     if (!res) return { success: false };
     return res.json();
@@ -95,7 +95,7 @@ export async function otpLogin(email, code) {
     const res = await fetchWithTimeout('/auth/otp-login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, code }),
+      body: JSON.stringify({ email, code })
     });
     if (!res) return { success: false };
     return res.json();
@@ -111,7 +111,7 @@ export async function changePassword(newPassword) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ newPassword }),
-      credentials: 'include',
+      credentials: 'include'
     });
     if (!res) return { success: false };
     return res.json();
@@ -124,7 +124,7 @@ export async function changePassword(newPassword) {
 export async function getDrinkingLogs(userId, year, month) {
   try {
     const res = await fetchWithTimeout(`/drinkingLogs/${year}/${month}?userId=${userId}`, {
-      credentials: 'include',
+      credentials: 'include'
     });
     if (!res) return { success: false };
     return res.json();
@@ -140,7 +140,7 @@ export async function updateDrinkingLog(userId, date, status) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
-      body: JSON.stringify({ userId, date, status }),
+      body: JSON.stringify({ userId, date, status })
     });
     if (!res) return { success: false };
     return res.json();
@@ -153,7 +153,7 @@ export async function updateDrinkingLog(userId, date, status) {
 export async function getUserAchievements(userId) {
   try {
     const res = await fetchWithTimeout(`/achievements?userId=${userId}`, {
-      credentials: 'include',
+      credentials: 'include'
     });
     if (!res) return { success: false };
     return res.json();
@@ -166,7 +166,7 @@ export async function getUserAchievements(userId) {
 export async function getAllUserLogs(userId) {
   try {
     const res = await fetchWithTimeout(`/drinkingLogs/all?userId=${userId}`, {
-      credentials: 'include',
+      credentials: 'include'
     });
     if (!res) return { success: false };
     return res.json();
@@ -182,7 +182,7 @@ export async function updateUserSettings(userId, settings) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
-      body: JSON.stringify({ userId, ...settings }),
+      body: JSON.stringify({ userId, ...settings })
     });
     if (!res) return { success: false };
     return res.json();
@@ -197,7 +197,7 @@ export async function createLeaderboard({ name, userId }) {
     const res = await fetchWithTimeout('/leaderboard/create', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, userId }),
+      body: JSON.stringify({ name, userId })
     });
     if (!res) return { success: false };
     return res.json();
@@ -212,7 +212,7 @@ export async function joinLeaderboard({ code, userId }) {
     const res = await fetchWithTimeout('/leaderboard/join', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ code, userId }),
+      body: JSON.stringify({ code, userId })
     });
     if (!res) return { success: false };
     return res.json();
@@ -225,7 +225,7 @@ export async function joinLeaderboard({ code, userId }) {
 export async function getUserLeaderboards(userId) {
   try {
     const res = await fetchWithTimeout(`/leaderboard/user/${userId}`, {
-      credentials: 'include',
+      credentials: 'include'
     });
     if (!res) return { success: false };
     return res.json();
@@ -240,7 +240,21 @@ export async function deleteLeaderboard({ leaderboardId, userId, password }) {
     const res = await fetchWithTimeout('/leaderboard/delete', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ leaderboardId, userId, password }),
+      body: JSON.stringify({ leaderboardId, userId, password })
+    });
+    if (!res) return { success: false };
+    return res.json();
+  } catch (err) {
+    console.error(err);
+    return { success: false };
+  }
+}
+
+// NEW: Fetch drinks from the database using your Drink model
+export async function getDrinks() {
+  try {
+    const res = await fetchWithTimeout('/drinks', {
+      credentials: 'include'
     });
     if (!res) return { success: false };
     return res.json();

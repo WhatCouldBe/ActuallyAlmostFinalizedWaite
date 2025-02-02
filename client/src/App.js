@@ -1,3 +1,4 @@
+// client/src/App.js
 import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
@@ -15,6 +16,11 @@ import ProtectedRoute from './ProtectedRoute';
 import ForgotPassword from './pages/ForgotPassword';
 import ChangePassword from './pages/ChangePassword';
 
+// Drinking Section pages
+import ImDrinking from './pages/ImDrinking';
+import DrinkDiagram from './pages/DrinkDiagram';
+import Mixes from './pages/Mixes';
+
 // Import the BackgroundBlobs component
 import BackgroundBlobs from './components/BackgroundBlobs';
 
@@ -25,7 +31,7 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      {/* Render the background blobs at the root level so they're not clipped */}
+      {/* Render the background blobs at the root level */}
       <BackgroundBlobs />
       <div className="app">
         {/* Ensure this container does not clip overflow */}
@@ -44,6 +50,10 @@ export default function App() {
             <Route path="/leaderboard" element={<ProtectedRoute><Leaderboard /></ProtectedRoute>} />
             <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
             <Route path="/speech-test" element={<ProtectedRoute><SpeechTest /></ProtectedRoute>} />
+            {/* Drinking Section Routes */}
+            <Route path="/im-drinking" element={<ProtectedRoute><ImDrinking /></ProtectedRoute>} />
+            <Route path="/drink-diagram" element={<ProtectedRoute><DrinkDiagram /></ProtectedRoute>} />
+            <Route path="/mixes" element={<ProtectedRoute><Mixes /></ProtectedRoute>} />
           </Routes>
         </div>
       </div>

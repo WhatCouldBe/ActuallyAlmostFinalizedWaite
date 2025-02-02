@@ -29,7 +29,7 @@ export default function Navbar({ onSignOut }) {
         </div>
         {/* Increased the font size for the title */}
         <div className="navbar-title" style={{ fontSize: '1.5rem' }}>
-        Waite
+          Waite
         </div>
         <div className="navbar-signout-container">
           <button className="navbar-signout" onClick={onSignOut}>
@@ -44,6 +44,7 @@ export default function Navbar({ onSignOut }) {
           <li onClick={() => handleLinkClick('/speech-test')}>Speech Test</li>
           <li onClick={() => handleLinkClick('/fun-activities')}>Fun Activities</li>
           <li onClick={() => handleLinkClick('/settings')}>Settings</li>
+          <li onClick={() => handleLinkClick('/im-drinking')}>I'm Drinking</li>
         </ul>
       </div>
       {isOpen && <div className="sidebar-overlay" onClick={toggleSidebar}></div>}
