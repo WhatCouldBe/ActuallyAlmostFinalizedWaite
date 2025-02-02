@@ -1,13 +1,8 @@
-
-async function fetchWithTimeout(url, options = {}, timeout = 30000) {
-  const controller = new AbortController();
-  const id = setTimeout(() => controller.abort(), timeout);
+async function fetchWithTimeout(url, options = {}) {
   try {
-    const res = await fetch(url, { ...options, signal: controller.signal });
-    clearTimeout(id);
+    const res = await fetch(url, options);
     return res;
   } catch (err) {
-    clearTimeout(id);
     console.error("Fetch failed for URL:", url, err);
     return null;
   }
@@ -248,7 +243,7 @@ export async function deleteLeaderboard({ leaderboardId, userId, password }) {
   }
 }
 
-// NEW: Fetch drinks from the database using your Drink model (if needed)
+// NEW: Fetch drinks from the database using your Drink model
 export async function getDrinks() {
   try {
     const res = await fetchWithTimeout('/drinks', {
