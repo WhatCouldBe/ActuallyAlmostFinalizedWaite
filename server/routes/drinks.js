@@ -1,4 +1,3 @@
-// server/routes/drinks.js
 const express = require('express');
 const router = express.Router();
 const Drink = require('../models/Drink');

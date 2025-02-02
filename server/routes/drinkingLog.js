@@ -1,9 +1,26 @@
-// server/routes/drinkingLog.js
 const express = require('express');
 const router = express.Router();
 const DrinkingLog = require('../models/DrinkingLog');
 const Achievement = require('../models/Achievement');
 const UserAchievement = require('../models/UserAchievement');
+
+router.get('/all', async (req, res) => {
+  try {
+    const { userId } = req.query;
+    if (!userId)
+      return res.status(400).json({ success: false, error: 'Missing userId' });
+    const now = new Date();
+    const past = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate());
+    const logs = await DrinkingLog.find({
+      user: userId,
+      date: { $gte: past, $lte: now },
+    });
+    return res.json({ success: true, logs });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ success: false, error: err.message });
+  }
+});
 
 // GET logs for a specific month
 router.get('/:year/:month', async (req, res) => {
@@ -15,25 +32,6 @@ router.get('/:year/:month', async (req, res) => {
     const logs = await DrinkingLog.find({
       user: userId,
       date: { $gte: startDate, $lte: endDate },
-    });
-    return res.json({ success: true, logs });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ success: false, error: err.message });
-  }
-});
-
-// GET all logs for the past 12 months
-router.get('/all', async (req, res) => {
-  try {
-    const { userId } = req.query;
-    if (!userId)
-      return res.status(400).json({ success: false, error: 'Missing userId' });
-    const now = new Date();
-    const past = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate());
-    const logs = await DrinkingLog.find({
-      user: userId,
-      date: { $gte: past, $lte: now },
     });
     return res.json({ success: true, logs });
   } catch (err) {
@@ -159,16 +157,6 @@ async function checkAndUnlockAchievements(userId) {
       }
     }
 
-    // 1_month_since_last_crashout: If no 'heavy' in the last 30 days.
-    const heavyLogs = logs.filter(l => l.status === 'heavy');
-    if (heavyLogs.length === 0 && logs.length > 0) {
-      const span = (logs[logs.length - 1].date - logs[0].date) / (1000 * 60 * 60 * 24);
-      if (span >= 30) unlocked.add('1_month_since_last_crashout');
-    } else if (heavyLogs.length > 0) {
-      const lastHeavy = heavyLogs[heavyLogs.length - 1].date;
-      const gap = (new Date() - lastHeavy) / (1000 * 60 * 60 * 24);
-      if (gap >= 30) unlocked.add('1_month_since_last_crashout');
-    }
 
     // weekend_warrior: Check for a Saturday–Sunday pair with status in ['sober','medium'].
     const logsByDate = {};
@@ -178,7 +166,7 @@ async function checkAndUnlockAchievements(userId) {
     });
     for (const key in logsByDate) {
       const d = new Date(key);
-      if (d.getDay() === 6) {
+      if (d.getDay() === 5) {
         const next = new Date(d);
         next.setDate(d.getDate() + 1);
         const nextKey = next.toISOString().split('T')[0];

@@ -1,6 +1,4 @@
-// client/src/api.js
 
-// Helper: fetch with a timeout (10 seconds)
 async function fetchWithTimeout(url, options = {}, timeout = 10000) {
   const controller = new AbortController();
   const id = setTimeout(() => controller.abort(), timeout);

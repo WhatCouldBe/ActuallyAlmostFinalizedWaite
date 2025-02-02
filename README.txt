@@ -1,5 +1,3 @@
-Alright mfers
-
 Before running
 
 cd server

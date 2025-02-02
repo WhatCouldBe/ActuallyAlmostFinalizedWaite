@@ -1,4 +1,3 @@
-// client/src/pages/DrinkDiagram.js
 import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import './DrinkDiagram.css';
