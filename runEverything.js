@@ -1,11 +1,12 @@
 // runEverything.js
-const { execSync, spawn } = require('child_process');
-const http = require('http');
+const { spawn, execSync } = require('child_process');
 const path = require('path');
+const http = require('http');
 
+// Helper: run a command synchronously and log output.
 function runCommand(command, options = {}) {
   try {
-    console.log(`Running: ${command}`);
+    console.log(`Running: ${command} in ${options.cwd || process.cwd()}`);
     execSync(command, { stdio: 'inherit', shell: true, ...options });
   } catch (err) {
     console.error(`Error running command: ${command}`, err);
@@ -13,7 +14,9 @@ function runCommand(command, options = {}) {
   }
 }
 
+// Helper: spawn a long-running process.
 function startProcess(command, args, cwd) {
+  console.log(`Starting process: ${command} ${args.join(' ')} in ${cwd}`);
   const proc = spawn(command, args, {
     cwd,
     stdio: 'inherit',
@@ -25,22 +28,25 @@ function startProcess(command, args, cwd) {
   return proc;
 }
 
-// 1. Install root dependencies
+// 1. Install root dependencies.
 runCommand('npm install');
 
-// 2. Install and start the server
+// 2. Start the server.
+//    (Since your server folder does not have its own package.json,
+//     we assume the server start script is defined in the root package.json.)
 const serverDir = path.join(__dirname, 'server');
-runCommand('npm install', { cwd: serverDir });
-console.log('Starting server...');
+console.log('Starting server from the server directory...');
 const serverProcess = startProcess('npm', ['start'], serverDir);
 
-// 3. Install and start the client
+// 3. Install dependencies in the client folder.
 const clientDir = path.join(__dirname, 'client');
 runCommand('npm install', { cwd: clientDir });
+
+// 4. Start the client.
 console.log('Starting client...');
 const clientProcess = startProcess('npm', ['start'], clientDir);
 
-// 4. Create a simple HTTP server for Render (or similar)
+// 5. Start a simple HTTP server (useful for Render or health checks).
 const port = process.env.PORT || 5001;
 http.createServer((req, res) => {
   res.writeHead(200, { 'Content-Type': 'text/plain' });
