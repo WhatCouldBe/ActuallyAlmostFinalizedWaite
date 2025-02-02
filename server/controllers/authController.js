@@ -1,7 +1,6 @@
-// server/controllers/authController.js
 require('dotenv').config();
 const nodemailer = require('nodemailer');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs'); // Updated: use bcryptjs
 const User = require('../models/User');
 const VerificationCode = require('../models/VerificationCode');
 const OneTimeCode = require('../models/OneTimeCode'); // if using forgot-password OTP
@@ -28,7 +27,7 @@ exports.signup = async (req, res) => {
       return res.status(400).json({ message: 'User already exists with that email.' });
     }
 
-    // Hash password
+    // Hash password using bcryptjs
     const hashed = await bcrypt.hash(password, 10);
 
     // Create user
@@ -98,6 +97,7 @@ exports.signin = async (req, res) => {
       return res.status(401).json({ message: 'Invalid email.' });
     }
 
+    // Compare using bcryptjs
     const match = await bcrypt.compare(password, user.password);
     if (!match) {
       return res.status(401).json({ message: 'Invalid password.' });

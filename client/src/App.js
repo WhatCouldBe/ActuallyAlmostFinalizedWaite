@@ -25,7 +25,7 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <BackgroundBlobs />
+      <BackgroundBlobs /> 
       <div className="app">
         <div className="container" style={{ overflow: 'visible' }}>
           {globalError && <div className="error">{globalError}</div>}

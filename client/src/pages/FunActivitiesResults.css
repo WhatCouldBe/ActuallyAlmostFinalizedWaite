@@ -6,7 +6,7 @@
   overflow-x: hidden;
   display: flex;              /* added for centering */
   justify-content: center;    /* added for centering */
-  align-items: center;        /* added for centering */
+  align-items: center;        /* added for   centering */
 }
 
 .fun-activities-results-content {

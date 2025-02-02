@@ -1,10 +1,11 @@
+// server/routes/leaderboardRoutes.js
 const express = require('express');
 const router = express.Router();
 const Leaderboard = require('../models/Leaderboard');
 const UserAchievement = require('../models/UserAchievement');
 const User = require('../models/User');
 const DrinkingLog = require('../models/DrinkingLog'); // For days sober count
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs'); // Changed to bcryptjs
 
 // Helper to generate a random 5-letter code.
 function generateCode() {
