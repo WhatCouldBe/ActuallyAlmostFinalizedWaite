@@ -1,5 +1,5 @@
 
-async function fetchWithTimeout(url, options = {}, timeout = 10000) {
+async function fetchWithTimeout(url, options = {}, timeout = 30000) {
   const controller = new AbortController();
   const id = setTimeout(() => controller.abort(), timeout);
   try {
@@ -21,7 +21,7 @@ export async function signup(data) {
       body: JSON.stringify(data)
     });
     if (!res) return { success: false };
-    return res.json();
+    return res.json();  
   } catch (err) {
     console.error(err);
     return { success: false };
@@ -248,7 +248,7 @@ export async function deleteLeaderboard({ leaderboardId, userId, password }) {
   }
 }
 
-// NEW: Fetch drinks from the database using your Drink model
+// NEW: Fetch drinks from the database using your Drink model (if needed)
 export async function getDrinks() {
   try {
     const res = await fetchWithTimeout('/drinks', {
