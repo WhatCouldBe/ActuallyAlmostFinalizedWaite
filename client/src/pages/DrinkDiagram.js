@@ -244,10 +244,10 @@ export default function DrinkDiagram() {
               <strong>Allowed Percentage</strong> is a simplified metric that shows how much of your maximum allowable alcohol intake (based on your weight and sex) is allocated for this drink given its strength (ABV). A lower percentage means that a stronger drink uses more of your alcohol limit.
             </p>
             <p>Additionally:</p>
-            <ul>
-              <li><strong>Alcohol in ml</strong> = (Allowed alcohol in grams) / 0.79</li>
-              <li><strong>Equivalent Drinks</strong> = (Alcohol in ml) / (Volume of the drink in ml)</li>
-            </ul>
+            <div>
+              <p><strong>Alcohol in ml</strong> = (Allowed alcohol in grams) / 0.79</p>
+              <p><strong>Equivalent Drinks</strong> = (Alcohol in ml) / (Volume of the drink in ml)</p>
+            </div>
           </div>
         </div>
       )}
