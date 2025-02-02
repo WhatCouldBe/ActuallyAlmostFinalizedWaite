@@ -194,6 +194,14 @@ export default function Home() {
 
   const handleDayClick = (dateObj) => {
     if (!dateObj) return;
+    // Prevent clicking on dates in the future if viewing the current month.
+    const clickedDate = new Date(dateObj);
+    clickedDate.setHours(12, 0, 0, 0);
+    const today = new Date();
+    today.setHours(12, 0, 0, 0);
+    if (currentYear === today.getFullYear() && currentMonth === (today.getMonth() + 1)) {
+      if (clickedDate > today) return;
+    }
     if (selectedDate && selectedDate.getTime() === dateObj.getTime()) {
       setIsDayPanelOpen(false);
       setTimeout(() => setSelectedDate(null), 300);

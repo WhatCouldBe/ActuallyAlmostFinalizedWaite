@@ -11,8 +11,9 @@
   
   .drink-diagram-content {
     background-color: #fff;
-    width: 90%;
-    min-width: 1000px;
+    width: 80%;
+    min-width: 800px;
+    max-height: 800px;
 
     max-width: 1000px;
     margin: 2rem auto;
