@@ -30,14 +30,18 @@ function startProcess(command, args, cwd) {
 // 1. Install dependencies in the root.
 runCommand('npm install');
 
-// 2. Build the client.
-const clientDir = path.join(__dirname, 'client');
-console.log('Building client...');
-runCommand('npm run build', { cwd: clientDir });
-
 // 3. Start the server (which serves the built client).
 const serverDir = path.join(__dirname, 'server');
 console.log('Starting server from the server directory...');
 // (Optionally run npm install in server if needed; remove if not necessary)
 runCommand('npm install', { cwd: serverDir });
 const serverProcess = startProcess('npm', ['start'], serverDir);
+
+
+
+// 2. Build the client.
+const clientDir = path.join(__dirname, 'client');
+console.log('Building client...');
+runCommand('npm install', { cwd: serverDir });
+runCommand('npm run build', { cwd: clientDir });
+
