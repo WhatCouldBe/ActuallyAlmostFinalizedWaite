@@ -1,6 +1,5 @@
 // runEverything.js
 const { execSync, spawn } = require('child_process');
-const http = require('http');
 const path = require('path');
 
 // Helper function to run a command synchronously.
@@ -28,27 +27,17 @@ function startProcess(command, args, cwd) {
   return proc;
 }
 
-// 1. Run npm install in the root.
+// 1. Install dependencies in the root.
 runCommand('npm install');
 
 // 2. Build the client.
-//    This assumes that the client folder has a valid package.json with a "build" script.
 const clientDir = path.join(__dirname, 'client');
 console.log('Building client...');
 runCommand('npm run build', { cwd: clientDir });
 
-// 3. Start the server.
-//    (Your root package.json's "start" script should be something like "node server/server.js")
+// 3. Start the server (which serves the built client).
 const serverDir = path.join(__dirname, 'server');
 console.log('Starting server from the server directory...');
-runCommand('npm install', { cwd: serverDir }); // Optional if your server folder needs dependencies
+// (Optionally run npm install in server if needed; remove if not necessary)
+runCommand('npm install', { cwd: serverDir });
 const serverProcess = startProcess('npm', ['start'], serverDir);
-
-// 4. (Optional) Start a simple HTTP health-check server on a different port.
-const healthPort = 6000;
-http.createServer((req, res) => {
-  res.writeHead(200, { 'Content-Type': 'text/plain' });
-  res.end('Bot is running\n');
-}).listen(healthPort, () => {
-  console.log(`Health check server started on port ${healthPort}`);
-});

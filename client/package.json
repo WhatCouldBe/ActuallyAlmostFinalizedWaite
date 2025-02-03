@@ -7,11 +7,13 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.14.2",
-    "react-scripts": "5.0.1"
+    "react-scripts": "5.0.1",
+    "shx": "^0.3.4"
   },
   "scripts": {
     "start": "PORT=3000 node ./node_modules/react-scripts/bin/react-scripts.js start",
-    "build": "node ./node_modules/react-scripts/bin/react-scripts.js build"
+    "build": "node ./node_modules/react-scripts/bin/react-scripts.js build",
+    "postinstall": "chmod +x ./node_modules/.bin/react-scripts || true"
   },
   "browserslist": {
     "production": [
@@ -26,6 +28,7 @@
     ]
   },
   "devDependencies": {
-    "eslint-plugin-react-hooks": "^5.1.0"
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
   }
 }
