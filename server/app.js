@@ -1,4 +1,3 @@
-// server/app.js
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
@@ -25,7 +24,12 @@ app.use(
 app.use((req, res, next) => {
   res.setHeader(
     'Content-Security-Policy',
-    "default-src 'self'; script-src 'self' 'unsafe-eval' https:; object-src 'none';"
+    "default-src 'self'; " +
+    "script-src 'self' 'unsafe-eval' https:; " +
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+    "font-src 'self' https://fonts.gstatic.com; " +
+    "img-src 'self' data: https:; " +
+    "object-src 'none';"
   );
   next();
 });
